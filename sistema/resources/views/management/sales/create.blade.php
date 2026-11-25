@@ -33,21 +33,9 @@
                 </div>
 
                 <div class="col-12 col-md-6 mb-3">
-    <label for="users_id" class="form-label">Vendedor</label>
-    <select name="users_id" id="users_id"
-            class="form-select @error('users_id') is-invalid @enderror">
-        <option value="">-- Seleccione --</option>
-        @foreach ($users as $user)
-            <option value="{{ $user->id }}"
-                @selected((string) old('users_id') === (string) $user->id)>
-                {{ $user->name }}
-            </option>
-        @endforeach
-    </select>
-    @error('users_id')
-        <div class="invalid-feedback">{{ $message }}</div>
-    @enderror
-</div>
+                    <label class="form-label">Vendedor</label>
+                    <input type="text" class="form-control bg-light" value="{{ auth()->user()->name }}" readonly>
+                </div>
             </div>
 
             <h6 class="text-uppercase small text-muted mt-2 mb-2">Medicamentos</h6>
