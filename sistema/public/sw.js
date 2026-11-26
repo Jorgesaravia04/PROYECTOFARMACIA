@@ -1,12 +1,14 @@
-const CACHE_NAME = 'farmacia-sjb-shell-v1';
+const CACHE_NAME = 'farmacia-sjb-shell-v2';
 const APP_SCOPE = self.registration.scope;
 const STATIC_ASSETS = [
     'manifest.json',
     'offline.html',
     'css/bootstrap.css',
     'css/custom.css',
+    'css/estilos.css',
     'js/bootstrap.bundle.min.js',
     'js/app.js',
+    'js/pwa.js',
     'icons/icon-192.png',
     'icons/icon-512.png',
 ].map((assetPath) => new URL(assetPath, APP_SCOPE).href);
