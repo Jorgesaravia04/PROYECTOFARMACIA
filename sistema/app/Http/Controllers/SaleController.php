@@ -41,7 +41,7 @@ class SaleController extends Controller
         $sale = DB::transaction(function () use ($request) {
             $sale = Sale::create([
                 'customer_id' => $request->customer_id,
-                'users_id' => $request->user()->id,
+                'users_id' => auth()->id(),
                 'date' => now(),
                 'total' => 0,
                 'igv' => 0,
@@ -50,11 +50,11 @@ class SaleController extends Controller
             $total = 0;
 
             foreach ($request->items as $item) {
-                $medicine = Medicine::lockForUpdate()->findOrFail($item['medicines_id']);
+                $medicine = Medicine::lockForUpdate()->find($item['medicines_id']);
 
                 if ($medicine->amount < $item['amount']) {
                     throw ValidationException::withMessages([
-                        'items' => "Stock insuficiente para {$medicine->category->name} (disponible: {$medicine->amount}).",
+                        'items' => 'Stock insuficiente para '.($medicine->category->name ?? 'Medicamento')." (disponible: {$medicine->amount}).",
                     ]);
                 }
 

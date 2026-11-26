@@ -7,21 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['customer_id', 'users_id', 'date', 'total', 'igv'])]
+#[Fillable(['users_id', 'customer_id', 'date', 'total', 'igv'])]
 class Sale extends Model
 {
     protected function casts(): array
     {
         return [
             'date' => 'datetime',
-            'total' => 'decimal:2',
-            'igv' => 'decimal:2',
         ];
-    }
-
-    public function customer(): BelongsTo
-    {
-        return $this->belongsTo(Customer::class);
     }
 
     public function user(): BelongsTo
@@ -29,16 +22,13 @@ class Sale extends Model
         return $this->belongsTo(User::class, 'users_id');
     }
 
-    public function details(): HasMany
+    public function customer(): BelongsTo
     {
-        return $this->hasMany(DetailSale::class, 'sales_id');
+        return $this->belongsTo(Customer::class);
     }
 
-    public function calculateTotal(): float
+    public function details(): HasMany
     {
-        $this->total = round((float) $this->details()->sum('subtotal'), 2);
-        $this->igv = round($this->total - ($this->total / 1.18), 2);
-
-        return (float) $this->total;
+        return $this->hasMany(Detail::class, 'sales_id');
     }
 }

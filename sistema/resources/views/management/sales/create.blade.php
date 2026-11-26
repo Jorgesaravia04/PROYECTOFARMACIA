@@ -33,8 +33,9 @@
                 </div>
 
                 <div class="col-12 col-md-6 mb-3">
-                    <label class="form-label">Vendedor</label>
-                    <input type="text" class="form-control bg-light" value="{{ auth()->user()->name }}" readonly>
+                    <label for="seller" class="form-label">Vendedor</label>
+                    <input type="text" id="seller" class="form-control"
+                           value="{{ auth()->user()->name }}" disabled>
                 </div>
             </div>
 

@@ -37,6 +37,6 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('login')->with('ok', 'Cerraste sesión correctamente.');
+        return to_route('login')->with('ok', 'Cerraste sesión correctamente.');
     }
 }

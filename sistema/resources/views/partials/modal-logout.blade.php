@@ -13,7 +13,7 @@
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
-                    <button type="submit" class="btn btn-danger">Cerrar sesión</button>
+                    <button type="submit" class="btn btn-danger">Salir</button>
                 </form>
             </div>
         </div>

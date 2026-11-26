@@ -9,19 +9,25 @@ use Illuminate\Support\Facades\Storage;
 
 class MedicineController extends Controller
 {
+    // Unidades a partir de las cuales el stock (amount) se considera bajo
     const LOW_STOCK = 10;
 
     public function index(Request $request)
     {
         $medicines = Medicine::with('category')
-            ->when($request->category_id, fn ($query, $categoryId) => $query->where('category_id', $categoryId))
-            ->when($request->boolean('low_stock'), fn ($query) => $query->where('amount', '<=', self::LOW_STOCK))
+            ->when($request->category_id, function ($query, $categoryId) {
+                $query->where('category_id', $categoryId);
+            })
+            ->when($request->boolean('low_stock'), function ($query) {
+                $query->where('amount', '<=', self::LOW_STOCK);
+            })
             ->orderByDesc('id')
             ->get();
 
         $categories = Category::orderBy('name')->get();
+        $lowStock = self::LOW_STOCK;
 
-        return view('management.medicines.index', compact('medicines', 'categories') + ['lowStock' => self::LOW_STOCK]);
+        return view('management.medicines.index', compact('medicines', 'categories', 'lowStock'));
     }
 
     public function create()
@@ -48,7 +54,9 @@ class MedicineController extends Controller
 
         Medicine::create($data);
 
-        return to_route('medicines.index')->with('ok', 'Medicamento registrado correctamente.');
+        return redirect()
+            ->route('medicines.index')
+            ->with('ok', 'Medicamento registrado correctamente.');
     }
 
     public function edit(Medicine $medicine)
@@ -80,7 +88,9 @@ class MedicineController extends Controller
 
         $medicine->update($data);
 
-        return to_route('medicines.index')->with('ok', 'Medicamento actualizado correctamente.');
+        return redirect()
+            ->route('medicines.index')
+            ->with('ok', 'Medicamento actualizado correctamente.');
     }
 
     public function destroy(Medicine $medicine)
@@ -91,6 +101,8 @@ class MedicineController extends Controller
 
         $medicine->delete();
 
-        return to_route('medicines.index')->with('ok', 'Medicamento eliminado correctamente.');
+        return redirect()
+            ->route('medicines.index')
+            ->with('ok', 'Medicamento eliminado correctamente.');
     }
 }
